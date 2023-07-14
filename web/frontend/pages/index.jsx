@@ -71,6 +71,8 @@ export default function HomePage() {
       </Card>
     ) : null;
 
+    const secondaryActions = [{content: 'Loyalty Points', url: '/CustomerPoints', loading: false}]
+
   /*
     Use Polaris Page and TitleBar components to create the page layout,
     and include the empty state contents set above.
@@ -83,6 +85,12 @@ export default function HomePage() {
           content: "Create QR code",
           onAction: () => navigate("/qrcodes/new"),
         }}
+        secondaryActions={secondaryActions}
+        /* secondaryActions={{
+          content: "Loyalty Points",
+          onAction: () => navigate("/qrcodes/new"),
+          loading: false
+        }} */
       />
       <Layout>
         <Layout.Section>
