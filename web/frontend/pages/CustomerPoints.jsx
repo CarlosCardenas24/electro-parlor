@@ -12,6 +12,7 @@ import {
 
 
 function MyComponent() {
+  const [QRcodes, setQRcodes] = useState([])
 
   const fetch = useAuthenticatedFetch()
 
@@ -27,12 +28,13 @@ function MyComponent() {
       }
       })
 
-      if(response.ok) {
-        const data = await response.json()
+      const data = await response.json()
 
+      setQRcodes(data)
         
-      }
     }
+
+    fetchCodes()
   })
 
   return (
@@ -49,9 +51,21 @@ function MyComponent() {
           </LegacyCard>
 
           <LegacyCard title='QR Codes' sectioned>
-            <Text variant="headingMd" as="p">
-              QR Test
-            </Text>
+            {
+              QRcodes.length === 0 ?
+              <Text variant="headingMd" as="p">
+              There are no QR codes
+              </Text>
+              :
+              <DataTable
+              columnContentTypes={['text', 'text']}
+              headings={['QR Codes', 'Add/Remove Points']}
+              rows={QRcodes.map((qrCodes) => {
+                  return [qrCodes.title, qrCodes.id]
+              })} 
+              />
+
+            }
           </LegacyCard>
         </Layout.Section>
       </Layout>
