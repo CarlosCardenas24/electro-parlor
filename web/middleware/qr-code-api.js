@@ -61,6 +61,9 @@ const SHOP_DATA_QUERY = `
   }
 `;
 
+// setup a method, decide how to unpack, decide how to get it in the db
+// get a branch, git add ., git commit, git push, 
+
 export default function applyQrCodeApiEndpoints(app) {
   app.use(express.json());
 

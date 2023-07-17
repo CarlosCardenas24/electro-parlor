@@ -8,7 +8,7 @@ import {
   Text,
   DataTable
 } from '@shopify/polaris'
-/* import Counters from '../components/Counters' */
+import Counters from '../components/Counters'
 
 
 function MyComponent() {
@@ -61,7 +61,11 @@ function MyComponent() {
               columnContentTypes={['text', 'text']}
               headings={['QR Codes', 'Add/Remove Points']}
               rows={QRcodes.map((qrCodes) => {
-                  return [qrCodes.title, qrCodes.id]
+                  return [
+                    qrCodes.title, 
+                    qrCodes.id,
+                    <Counters/>
+                  ]
               })} 
               />
 
