@@ -62,7 +62,7 @@ export const QRCodesDB = {
     RETURNING qrCodeID;
     `;
 
-    const rawresults = await this.__query(query, [
+    const rawResults = await this.__query(query, [
       qrCodeID,
       loyaltyPoints,
     ])
@@ -112,6 +112,29 @@ export const QRCodesDB = {
     return true;
   },
 
+  // update loyalty points
+  updateLoyaltyPoints: async function ({
+    qrCodeID,
+    loyaltyPoints
+  }) {
+    await this.ready
+
+    const query = `
+    UPDATE ${this.loyaltyPointsTableName}
+    SET
+      loyaltyPoints = ?,
+    WHERE
+      qrCodeID = ?  
+    `;
+
+    await this.__query(query, [
+      qrCodeID,
+      loyaltyPoints
+    ])
+
+    return true
+  },
+
   list: async function (shopDomain) {
     await this.ready;
     const query = `
@@ -122,6 +145,18 @@ export const QRCodesDB = {
     const results = await this.__query(query, [shopDomain]);
 
     return results.map((qrcode) => this.__addImageUrl(qrcode));
+  },
+
+  // list of loyalty points
+  listLoyaltyPoints: async function (shopDomain) {
+    await this.ready
+    const query = `
+    SELECT * FROM ${this.loyaltyPointsTableName}
+    WHERE shopDomain = ?;
+    `
+    const results = await this.__query(query, [shopDomain])
+
+    return results
   },
 
   read: async function (id) {
@@ -144,6 +179,17 @@ export const QRCodesDB = {
     `;
     await this.__query(query, [id]);
     return true;
+  },
+
+  // delete loyalty points
+  deleteLoyaltyPoints: async function (qrCodeID) {
+    await this.ready
+    const query = `
+    DELETE FROM ${this.loyaltyPointsTableName}
+    WHERE qrCodeID = ?;
+    `
+    await this.__query(query, [qrCodeID])
+    return true
   },
 
   /* The destination URL for a QR code is generated at query time */
