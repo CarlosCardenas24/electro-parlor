@@ -150,3 +150,22 @@ export default function applyQrCodeApiEndpoints(app) {
     }
   });
 }
+
+// Start of customer points
+
+app.post("/api/loyaltypoints", async (req, res) => {
+  try {
+    const id = await QRCodesDB.create({
+      ...(await parseQrCodeBody(req)),
+
+      /* Get the shop from the authorization header to prevent users from spoofing the data */
+      shopDomain: await getShopUrlFromSession(req, res),
+    });
+    const response = await formatQrCodeResponse(req, res, [
+      await QRCodesDB.read(id),
+    ]);
+    res.status(201).send(response[0]);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});

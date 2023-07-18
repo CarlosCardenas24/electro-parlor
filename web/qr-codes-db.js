@@ -11,6 +11,7 @@ const DEFAULT_PURCHASE_QUANTITY = 1;
 
 export const QRCodesDB = {
   qrCodesTableName: "qr_codes",
+  loyaltyPointsTableName: "loyalty_points",
   db: null,
   ready: null,
 
@@ -46,6 +47,29 @@ export const QRCodesDB = {
 
     return rawResults[0].id;
   },
+
+  // create loyalty points
+  createLoyaltyPoints: async function ({
+    qrCodeID,
+    loyaltyPoints
+  }) {
+    await this.ready
+
+    const query = `
+    INSERT INTO ${this.loyaltyPointsTableName}
+    (qrCodeID, loyaltyPoints)
+    VALUES (?, ?)
+    RETURNING qrCodeID;
+    `;
+
+    const rawresults = await this.__query(query, [
+      qrCodeID,
+      loyaltyPoints,
+    ])
+
+    return rawResults[0].qrCodeID
+  },
+
 
   update: async function (
     id,
