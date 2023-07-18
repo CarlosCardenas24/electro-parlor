@@ -63,7 +63,6 @@ function MyComponent() {
               rows={QRcodes.map((qrCodes) => {
                   return [
                     qrCodes.title, 
-                    qrCodes.id,
                     <Counters/>
                   ]
               })} 
