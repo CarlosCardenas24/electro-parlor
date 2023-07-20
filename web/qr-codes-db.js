@@ -171,6 +171,19 @@ export const QRCodesDB = {
     return this.__addImageUrl(rows[0]);
   },
 
+  // read loyalty points
+  readLoyaltyPoints: async function (qrCodeID){
+    await this.ready
+    const query = `
+      SELECT * FROM ${this.loyaltyPointsTableName}
+      WHERE qrCodeID = ?;
+    `
+    const rows = await this.__query(query, [qrCodeID])
+    if (!Array.isArray(rows) || rows?.length !== 1) return undefined
+
+    return rows[0]
+  },
+
   delete: async function (id) {
     await this.ready;
     const query = `
@@ -235,6 +248,17 @@ export const QRCodesDB = {
     `;
     const rows = await this.__query(query, [this.qrCodesTableName]);
     return rows.length === 1;
+  },
+
+  __hasLoyaltyTable: async function () {
+    const query = `
+    SELECT name FROM sqlite_schema
+    Where
+      type = 'table' AND
+      name = ?;
+    `
+    const rows = await this.__query(query, [this.loyaltyPointsTableName])
+    return rows.length === 1
   },
 
   /* Initializes the connection with the app's sqlite3 database */
