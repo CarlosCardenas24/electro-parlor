@@ -250,7 +250,7 @@ export const QRCodesDB = {
     return rows.length === 1;
   },
 
-  __hasLoyaltyTable: async function () {
+  __hasLoyaltyPointsTable: async function () {
     const query = `
     SELECT name FROM sqlite_schema
     Where
@@ -293,6 +293,26 @@ export const QRCodesDB = {
       /* Tell the various CRUD methods that they can execute */
       this.ready = this.__query(query);
     }
+  },
+
+  initLoyaltyPoints: async function () {
+
+    this.db = this.db ?? new sqlite3.Database(DEFAULT_DB_FILE);
+    const hasLoyaltyPointsTable = await this.__hasLoyaltyPointsTable();
+
+    if (hasLoyaltyPointsTable) {
+      this.ready = Promise.resolve()
+
+    } else {
+      const query = `
+      CREATE TABLE ${this.loyaltyPointsTableName} (
+        qrCodeID INTEGER PRIMARY KEY NOT NULL,
+        loyaltyPoints INTEGER NOT NULL,
+      )
+      `
+      this.ready = this.__query(query)
+    }
+
   },
 
   /* Perform a query on the database. Used by the various CRUD methods. */
