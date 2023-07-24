@@ -169,7 +169,7 @@ export default function applyQrCodeApiEndpoints(app) {
       res.status(500).send(error.message);
     } */
     try {
-      res.status(200).send(`works`)
+      res.status(200)
     } catch (error) {
       res.status(500).send(error.message);
     }

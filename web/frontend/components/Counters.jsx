@@ -17,7 +17,7 @@ function Counters({qrCodeID, points}) {
         const fetchPost = async () => {
             const method = 'POST'
 
-            const response = await fetch(`/api/loyaltypoints`, {
+            const response = await fetch(`/api/loyaltypoints?${window.__SHOPIFY_DEV_HOST}`, {
                 method,
                 headers: {
                     'Content-Type': 'application/json'
