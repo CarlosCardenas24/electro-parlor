@@ -9,8 +9,15 @@ import {
 import { show } from "@shopify/app-bridge/actions/ContextualSaveBar";
 
 function Counters({qrCodeID, points}) {
-    const [loyaltyPoints, setLoyaltyPoints] = useState()
+    const [loyaltyPoints, setLoyaltyPoints] = useState(points)
     const fetch = useAuthenticatedFetch()
+
+    // subract loyalty points -- don't allow below zero
+    const subtractPoints = () => {
+        if (loyaltyPoints > 0) {
+            setLoyaltyPoints(loyaltyPoints - 1)
+        }
+    }
 
     // get a successful request to the api
     const onSave = () => {
@@ -32,11 +39,11 @@ function Counters({qrCodeID, points}) {
     return (
         <HorizontalGrid gap="4">
             <Text>
-                Loyalty points: 0
+                Loyalty points: {loyaltyPoints}
             </Text>
             <ButtonGroup>
-                <Button>+</Button>
-                <Button>-</Button>
+                <Button onClick={() => setLoyaltyPoints(loyaltyPoints + 1)}>+</Button>
+                <Button onClick={subtractPoints}>-</Button>
                 <Button primary onClick={onSave}>Save</Button>
                 <Button>update</Button>
                 <Button>delete</Button>

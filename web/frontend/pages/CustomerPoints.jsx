@@ -66,7 +66,7 @@ function MyComponent() {
                   return [
                     qrCodes.title, 
                     <Counters
-                      /* points = {loyaltyPoints} */
+                      points = {0}
                       qrCodeID = {qrCodes.id}
                     />
                   ]
