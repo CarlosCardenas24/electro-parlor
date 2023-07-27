@@ -151,29 +151,26 @@ export default function applyQrCodeApiEndpoints(app) {
   });
 
   /* Test as you code.  */
+  /* response = await QRCodesDB.initLoyaltyPoints()
+      createResponse = await QRCodesDB.createLoyaltyPoints(req.body) */
 
   // Start of customer points
 
-  app.post("/api/loyaltypoints", async (req, res) => {
-    /* Get the shop from the authorization header to prevent users from spoofing the data */
-    /* try {
-      const qrCodeID = await QRCodesDB.createLoyaltyPoints({
-        here
-        shopDomain: await getShopUrlFromSession(req, res),
-      });
-      const response = await formatQrCodeResponse(req, res, [
-        await QRCodesDB.readLoyaltyPoints(qrCodeID),
-      ]);
-      res.status(201).send(response[0]);
-    } catch (error) {
-      res.status(500).send(error.message);
-    } */
+  app.post("/api/loyaltypoints", async (req, res) => { 
     try {
-      res.status(200).send("works") 
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-    
+      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body);
+      const initResponse = await QRCodesDB.initLoyaltyPoints(req, res, [
+        await QRCodesDB.readLoyaltyPoints(createResponse),
+      ]);
 
+      res.status(201).send({
+        success: 201,
+        message: ['Loyalty Points stored successfully', {table: initResponse, createResponse}]
+      });
+
+    } catch (error) {
+      console.log(`Failed ${err.message}`)
+      error = null
+    }
   });
 }

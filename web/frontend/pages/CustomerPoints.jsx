@@ -25,15 +25,13 @@ function MyComponent() {
       const response = await fetch('/api/qrcodes', {
       method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }
       })
 
       const data = await response.json()
 
-      setQrCodes(data)
-      
-        
+      setQrCodes(data)       
     }
 
     fetchCodes()
