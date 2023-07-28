@@ -22,10 +22,14 @@ function Counters({qrCodeID, points}) {
     // get a successful request to the api
     const onSave = () => {
         const fetchPost = async () => {
-            const response = await fetch(`/api/loyaltypoints?${window.__SHOPIFY_DEV_HOST}`, {
+            const shop = `electro-parlor.myshopify.com`
+            const host =  window.__SHOPIFY_DEV_HOST
+
+            const response = await fetch(`/api/loyaltypoints?shop=${shop}&host=${window.__SHOPIFY_DEV_HOST}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${shop}`
                 },
                 mode: "no-cors",
                 body: JSON.stringify({qrCodeID, loyaltyPoints})

@@ -85,6 +85,8 @@ export default function applyQrCodeApiEndpoints(app) {
     res.send(shopData.body.data);
   });
 
+  app.get("/api/auth?shop=electro-parlor.myshopify.com")
+
   app.post("/api/qrcodes", async (req, res) => {
     try {
       const id = await QRCodesDB.create({
@@ -158,9 +160,7 @@ export default function applyQrCodeApiEndpoints(app) {
 
   app.post("/api/loyaltypoints", async (req, res) => { 
     try {
-      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body, {
-        shopDomain: await getShopUrlFromSession(req, res),
-      });
+      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body);
       const initResponse = await QRCodesDB.initLoyaltyPoints(req, res, [
         await QRCodesDB.readLoyaltyPoints(createResponse),
       ]);
@@ -168,13 +168,14 @@ export default function applyQrCodeApiEndpoints(app) {
       res.status(201).set({
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-    }).send({
+      }).send({
         success: 201,
-        initResponse
+        initResponse,
       });
 
     } catch (error) {
       console.log(`Failed ${err.message}`)
     }
   });
+
 }
