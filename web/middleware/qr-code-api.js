@@ -158,19 +158,23 @@ export default function applyQrCodeApiEndpoints(app) {
 
   app.post("/api/loyaltypoints", async (req, res) => { 
     try {
-      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body);
+      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body, {
+        shopDomain: await getShopUrlFromSession(req, res),
+      });
       const initResponse = await QRCodesDB.initLoyaltyPoints(req, res, [
         await QRCodesDB.readLoyaltyPoints(createResponse),
       ]);
 
-      res.status(201).send({
+      res.status(201).set({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+    }).send({
         success: 201,
-        message: ['Loyalty Points stored successfully', {table: initResponse, createResponse}]
+        initResponse
       });
 
     } catch (error) {
       console.log(`Failed ${err.message}`)
-      error = null
     }
   });
 }
