@@ -168,6 +168,7 @@ export default function applyQrCodeApiEndpoints(app) {
       res.status(201).set({
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Set-Cookie": "SameSite=None; Secure"
       }).send({
         success: 201,
         initResponse,
