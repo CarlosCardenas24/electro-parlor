@@ -35,7 +35,7 @@ function MyComponent() {
     }
 
     fetchCodes()
-  })
+  }, [])
 
   return (
     <Page

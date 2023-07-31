@@ -51,7 +51,7 @@ applyQrCodePublicEndpoints(app);
 
 app.use("/api/*", shopify.validateAuthenticatedSession());
 // we have to add our new middleware *after* the shopify.validateAuthenticatedSession middleware, like so:
-app.use("/*", addSessionShopToReqParams)
+app.use("/api/*", addSessionShopToReqParams)
 
 app.use(express.json());
 

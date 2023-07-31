@@ -10,6 +10,7 @@ import { show } from "@shopify/app-bridge/actions/ContextualSaveBar";
 
 function Counters({qrCodeID, points}) {
     const [loyaltyPoints, setLoyaltyPoints] = useState(points)
+
     const fetch = useAuthenticatedFetch()
 
     // subract loyalty points -- don't allow below zero
@@ -21,7 +22,7 @@ function Counters({qrCodeID, points}) {
 
     // get a successful request to the api
     const onSave = () => {
-        const fetchPost = async () => {
+        const fetchPost = async () => { 
             const shop = `electro-parlor.myshopify.com`
             const host =  window.__SHOPIFY_DEV_HOST
 
@@ -29,7 +30,7 @@ function Counters({qrCodeID, points}) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${shop}`
+                    'isOnline': true
                 },
                 mode: "no-cors",
                 body: JSON.stringify({qrCodeID, loyaltyPoints})
