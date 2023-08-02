@@ -85,6 +85,8 @@ export default function applyQrCodeApiEndpoints(app) {
     res.send(shopData.body.data);
   });
 
+  app.get("/api/auth?shop=electro-parlor.myshopify.com")
+
   app.post("/api/qrcodes", async (req, res) => {
     try {
       const id = await QRCodesDB.create({

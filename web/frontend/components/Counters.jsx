@@ -8,16 +8,48 @@ import {
 } from "@shopify/polaris";
 import { show } from "@shopify/app-bridge/actions/ContextualSaveBar";
 
-function Counters() {
+function Counters({qrCodeID, points}) {
+    const [loyaltyPoints, setLoyaltyPoints] = useState(points)
+
+    const fetch = useAuthenticatedFetch()
+
+    // subract loyalty points -- don't allow below zero
+    const subtractPoints = () => {
+        if (loyaltyPoints > 0) {
+            setLoyaltyPoints(loyaltyPoints - 1)
+        }
+    }
+
+    // get a successful request to the api
+    const onSave = () => {
+        const fetchPost = async () => { 
+            const shop = `electro-parlor.myshopify.com`
+            const host =  window.__SHOPIFY_DEV_HOST
+
+            const response = await fetch(`/api/loyaltypoints?shop=${shop}&host=${window.__SHOPIFY_DEV_HOST}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'isOnline': true
+                },
+                mode: "no-cors",
+                body: JSON.stringify({qrCodeID, loyaltyPoints})
+            })
+            const data = await response.json()
+            console.log(data)
+        }
+        fetchPost()
+    }
+
     return (
         <HorizontalGrid gap="4">
             <Text>
-                Loyalty points: 0
+                Loyalty points: {loyaltyPoints}
             </Text>
             <ButtonGroup>
-                <Button>+</Button>
-                <Button>-</Button>
-                <Button primary>Save</Button>
+                <Button onClick={() => setLoyaltyPoints(loyaltyPoints + 1)}>+</Button>
+                <Button onClick={subtractPoints}>-</Button>
+                <Button primary onClick={onSave}>Save</Button>
                 <Button>update</Button>
                 <Button>delete</Button>
             </ButtonGroup>

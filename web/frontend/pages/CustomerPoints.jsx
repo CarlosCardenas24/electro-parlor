@@ -12,7 +12,8 @@ import Counters from '../components/Counters'
 
 
 function MyComponent() {
-  const [QRcodes, setQRcodes] = useState([])
+  const [QrCodes, setQrCodes] = useState([])
+  const [loyaltyPoints, setLoyaltyPoints] = useState()
 
   const fetch = useAuthenticatedFetch()
 
@@ -24,14 +25,13 @@ function MyComponent() {
       const response = await fetch('/api/qrcodes', {
       method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }
       })
 
       const data = await response.json()
 
-      setQRcodes(data)
-        
+      setQrCodes(data)       
     }
 
     fetchCodes()
@@ -46,13 +46,13 @@ function MyComponent() {
         <Layout.Section>
           <LegacyCard title='Add loyalty points' sectioned>
             <Text variant="headingMd" as="p">
-              Test Text
+              Change the amount of points for each QR Code
             </Text>
           </LegacyCard>
 
           <LegacyCard title='QR Codes' sectioned>
             {
-              QRcodes.length === 0 ?
+              QrCodes.length === 0 ?
               <Text variant="headingMd" as="p">
               There are no QR codes
               </Text>
@@ -60,10 +60,13 @@ function MyComponent() {
               <DataTable
               columnContentTypes={['text', 'text']}
               headings={['QR Codes', 'Add/Remove Points']}
-              rows={QRcodes.map((qrCodes) => {
+              rows={QrCodes.map((qrCodes) => {
                   return [
                     qrCodes.title, 
-                    <Counters/>
+                    <Counters
+                      points = {0}
+                      qrCodeID = {qrCodes.id}
+                    />
                   ]
               })} 
               />

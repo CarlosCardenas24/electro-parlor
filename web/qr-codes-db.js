@@ -302,7 +302,6 @@ export const QRCodesDB = {
 
     if (hasLoyaltyPointsTable) {
       this.ready = Promise.resolve()
-
     } else {
       const query = `
       CREATE TABLE ${this.loyaltyPointsTableName} (
