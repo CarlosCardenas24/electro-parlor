@@ -124,10 +124,10 @@ export default function applyQrCodeApiEndpoints(app) {
         await getShopUrlFromSession(req, res)
       );
 
-      const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
+      //const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
       const qrCode = await formatQrCodeResponse(req, res, rawCodeData);
       
-      res.status(200).send(qrCode).send(qrCodeLoyaltyPoints);
+      res.status(200).send(qrCode);
     } catch (error) {
       console.error(error);
       res.status(500).send(error.message);
@@ -155,7 +155,7 @@ export default function applyQrCodeApiEndpoints(app) {
   // Start of customer points
   app.post("/api/loyaltypoints", async (req, res) => {
     try {
-      res.status(201);
+      res.status(201).send({ message: 'Loyalty points successfully processed.' });
     } catch (error) {
       res.status(500).send(error.message);
     }

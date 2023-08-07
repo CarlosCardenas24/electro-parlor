@@ -2,7 +2,7 @@
 
 name = "CCWebArch"
 client_id = "fc10140194da0eb4be42235c66b881d4"
-application_url = "https://voting-chad-singer-outlined.trycloudflare.com"
+application_url = "https://franchise-plant-fg-thermal.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products,read_discounts"
 
 [auth]
 redirect_urls = [
-  "https://voting-chad-singer-outlined.trycloudflare.com/auth/callback",
-  "https://voting-chad-singer-outlined.trycloudflare.com/auth/shopify/callback",
-  "https://voting-chad-singer-outlined.trycloudflare.com/api/auth/callback"
+  "https://franchise-plant-fg-thermal.trycloudflare.com/auth/callback",
+  "https://franchise-plant-fg-thermal.trycloudflare.com/auth/shopify/callback",
+  "https://franchise-plant-fg-thermal.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
