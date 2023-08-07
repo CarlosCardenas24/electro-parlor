@@ -11,7 +11,7 @@ const DEFAULT_PURCHASE_QUANTITY = 1;
 
 export const QRCodesDB = {
   qrCodesTableName: "qr_codes",
-  loyaltyPointsTableName: "loyalty_points",
+  loyaltyPointsTableName: "points",
   db: null,
   ready: null,
 
@@ -57,7 +57,7 @@ export const QRCodesDB = {
 
     const query = `
     INSERT INTO ${this.loyaltyPointsTableName}
-    (qrCodeID, loyaltyPoints)
+    (qrCodeID, points)
     VALUES (?, ?)
     RETURNING qrCodeID;
     `;
@@ -115,21 +115,21 @@ export const QRCodesDB = {
   // update loyalty points
   updateLoyaltyPoints: async function ({
     qrCodeID,
-    loyaltyPoints
+    points
   }) {
     await this.ready
 
     const query = `
     UPDATE ${this.loyaltyPointsTableName}
     SET
-      loyaltyPoints = ?,
+      points = ?,
     WHERE
       qrCodeID = ?  
     `;
 
     await this.__query(query, [
       qrCodeID,
-      loyaltyPoints
+      points
     ])
 
     return true
@@ -148,13 +148,12 @@ export const QRCodesDB = {
   },
 
   // list of loyalty points
-  listLoyaltyPoints: async function (shopDomain) {
+  listLoyaltyPoints: async function () {
     await this.ready
     const query = `
-    SELECT * FROM ${this.loyaltyPointsTableName}
-    WHERE shopDomain = ?;
+    SELECT * FROM ${this.loyaltyPointsTableName};
     `
-    const results = await this.__query(query, [shopDomain])
+    const results = await this.__query(query)
 
     return results
   },
@@ -298,22 +297,43 @@ export const QRCodesDB = {
   initLoyaltyPoints: async function () {
 
     this.db = this.db ?? new sqlite3.Database(DEFAULT_DB_FILE);
+
     const hasLoyaltyPointsTable = await this.__hasLoyaltyPointsTable();
 
     if (hasLoyaltyPointsTable) {
       this.ready = Promise.resolve()
-
+      return `table: ${this.loyaltyPointsTableName} exists`
     } else {
       const query = `
       CREATE TABLE ${this.loyaltyPointsTableName} (
         qrCodeID INTEGER PRIMARY KEY NOT NULL,
-        loyaltyPoints INTEGER NOT NULL,
+        points INTEGER NOT NULL,
       )
       `
       this.ready = this.__query(query)
+      return `table: ${this.loyaltyPointsTableName} has already been created`
     }
 
   },
+
+  dropLoyaltyPoints: async function () {
+    /* Initializes the connection to the database */
+    this.db = this.db ?? new sqlite3.Database(DEFAULT_DB_FILE);
+
+    const hasLoyaltyPointsTable = await this.__hasLoyaltyPointsTable();
+
+    //if the table exists, drop it
+    if (hasLoyaltyPointsTable) {
+       
+       const query = `DROP TABLE ${this.loyaltyPointsTableName}`;
+       this.ready = this.__query(query);
+       return `table: ${this.loyaltyPointsTableName} has been dropped`
+ 
+    } else {
+     this.ready = Promise.resolve();
+     return `table: ${this.loyaltyPointsTableName} does not exist`
+    }
+ },
 
   /* Perform a query on the database. Used by the various CRUD methods. */
   __query: function (sql, params = []) {
