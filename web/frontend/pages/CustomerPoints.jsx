@@ -25,7 +25,7 @@ function MyComponent() {
       const response = await fetch('/api/qrcodes', {
       method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }
       })
 
@@ -49,7 +49,7 @@ function MyComponent() {
         <Layout.Section>
           <LegacyCard title='Add loyalty points' sectioned>
             <Text variant="headingMd" as="p">
-              Test Text
+              Change the amount of points for each QR Code
             </Text>
           </LegacyCard>
 

@@ -9,7 +9,7 @@ import {
 import { show } from "@shopify/app-bridge/actions/ContextualSaveBar";
 
 function Counters({qrCodeID, points}) {
-    const [loyalPoints, setLoyaltyPoints] = useState(points)
+    const [loyaltyPoints, setLoyaltyPoints] = useState(points)
 
     const fetch = useAuthenticatedFetch()
 

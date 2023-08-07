@@ -23,6 +23,15 @@ const STATIC_PATH =
 
 const app = express();
 
+// Code made by github user bashunaimiroy to fix error caused by ensureInstalledOnShop
+const addSessionShopToReqParams = (req, res, next) => {
+  const shop = res.locals?.shopify?.session?.shop;
+  if (shop && !req.query.shop) {
+    req.query.shop = shop;
+  }
+  return next();
+}
+
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
 app.get(
@@ -41,6 +50,8 @@ app.post(
 applyQrCodePublicEndpoints(app);
 
 app.use("/api/*", shopify.validateAuthenticatedSession());
+// we have to add our new middleware *after* the shopify.validateAuthenticatedSession middleware, like so:
+app.use("/api/*", addSessionShopToReqParams)
 
 app.use(express.json());
 
