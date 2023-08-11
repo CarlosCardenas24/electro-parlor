@@ -302,7 +302,7 @@ export const QRCodesDB = {
 
     if (hasLoyaltyPointsTable) {
       this.ready = Promise.resolve()
-      return `table: ${this.loyaltyPointsTableName} exists`
+
     } else {
       const query = `
       CREATE TABLE ${this.loyaltyPointsTableName} (
@@ -311,29 +311,9 @@ export const QRCodesDB = {
       )
       `
       this.ready = this.__query(query)
-      return `table: ${this.loyaltyPointsTableName} has already been created`
     }
 
   },
-
-  dropLoyaltyPoints: async function () {
-    /* Initializes the connection to the database */
-    this.db = this.db ?? new sqlite3.Database(DEFAULT_DB_FILE);
-
-    const hasLoyaltyPointsTable = await this.__hasLoyaltyPointsTable();
-
-    //if the table exists, drop it
-    if (hasLoyaltyPointsTable) {
-       
-       const query = `DROP TABLE ${this.loyaltyPointsTableName}`;
-       this.ready = this.__query(query);
-       return `table: ${this.loyaltyPointsTableName} has been dropped`
- 
-    } else {
-     this.ready = Promise.resolve();
-     return `table: ${this.loyaltyPointsTableName} does not exist`
-    }
- },
 
   /* Perform a query on the database. Used by the various CRUD methods. */
   __query: function (sql, params = []) {

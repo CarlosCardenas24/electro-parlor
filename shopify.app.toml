@@ -2,7 +2,7 @@
 
 name = "CCWebArch"
 client_id = "fc10140194da0eb4be42235c66b881d4"
-application_url = "https://barry-hiv-fur-mali.trycloudflare.com"
+application_url = "https://disorders-longer-presentations-younger.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products,read_discounts"
 
 [auth]
 redirect_urls = [
-  "https://barry-hiv-fur-mali.trycloudflare.com/auth/callback",
-  "https://barry-hiv-fur-mali.trycloudflare.com/auth/shopify/callback",
-  "https://barry-hiv-fur-mali.trycloudflare.com/api/auth/callback"
+  "https://disorders-longer-presentations-younger.trycloudflare.com/auth/callback",
+  "https://disorders-longer-presentations-younger.trycloudflare.com/auth/shopify/callback",
+  "https://disorders-longer-presentations-younger.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

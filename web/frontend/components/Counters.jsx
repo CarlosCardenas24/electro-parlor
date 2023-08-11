@@ -18,8 +18,10 @@ function Counters({qrCodeID, points}) {
             const response = await fetch (`/api/loyaltypoints?host=${window.__SHOPIFY_DEV_HOST}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({qrCodeID, loyaltyPoints})
             })
             const data = await response.json()
             console.log(data)
@@ -30,7 +32,7 @@ function Counters({qrCodeID, points}) {
     return (
         <HorizontalGrid gap="4">
             <Text>
-                Loyalty points: 0
+                Loyalty points: {loyaltyPoints}
             </Text>
             <ButtonGroup>
                 <Button >+</Button>
