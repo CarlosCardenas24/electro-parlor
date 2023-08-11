@@ -2,7 +2,7 @@
 
 name = "CCWebArch"
 client_id = "fc10140194da0eb4be42235c66b881d4"
-application_url = "https://disorders-longer-presentations-younger.trycloudflare.com"
+application_url = "https://effort-accurately-announce-thickness.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products,read_discounts"
 
 [auth]
 redirect_urls = [
-  "https://disorders-longer-presentations-younger.trycloudflare.com/auth/callback",
-  "https://disorders-longer-presentations-younger.trycloudflare.com/auth/shopify/callback",
-  "https://disorders-longer-presentations-younger.trycloudflare.com/api/auth/callback"
+  "https://effort-accurately-announce-thickness.trycloudflare.com/auth/callback",
+  "https://effort-accurately-announce-thickness.trycloudflare.com/auth/shopify/callback",
+  "https://effort-accurately-announce-thickness.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

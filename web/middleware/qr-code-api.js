@@ -159,8 +159,8 @@ export default function applyQrCodeApiEndpoints(app) {
   // Start of customer points
   app.post("/api/loyaltypoints", async (req, res) => {
     try {
-      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body)
       const initResponse = await QRCodesDB.initLoyaltyPoints()
+      const createResponse = await QRCodesDB.createLoyaltyPoints(req.body)
 
       return res.status(201).send({
         message: "good"

@@ -53,7 +53,7 @@ export const QRCodesDB = {
     qrCodeID,
     loyaltyPoints
   }) {
-    await this.ready
+    this.ready
 
     const query = `
     INSERT INTO ${this.loyaltyPointsTableName}
@@ -307,9 +307,9 @@ export const QRCodesDB = {
       const query = `
       CREATE TABLE ${this.loyaltyPointsTableName} (
         qrCodeID INTEGER PRIMARY KEY NOT NULL,
-        points INTEGER NOT NULL,
+        points INTEGER NOT NULL
       )
-      `
+      `;
       this.ready = this.__query(query)
     }
 
