@@ -12,6 +12,13 @@ function Counters({qrCodeID, points}) {
     const [loyaltyPoints, setLoyaltyPoints] = useState(points)
 
     const fetch = useAuthenticatedFetch()
+    
+    // subract loyalty points -- don't allow below zero
+    const subtractPoints = () => {
+        if (loyaltyPoints > 0) {
+            setLoyaltyPoints(loyaltyPoints - 1)
+        }
+    }
 
     const onSave = () => {
         const fetchPost = async () => {
@@ -35,8 +42,8 @@ function Counters({qrCodeID, points}) {
                 Loyalty points: {loyaltyPoints}
             </Text>
             <ButtonGroup>
-                <Button >+</Button>
-                <Button>-</Button>
+                <Button onClick={() => setLoyaltyPoints(loyaltyPoints + 1)}>+</Button>
+                <Button onClick={subtractPoints}>-</Button>
                 <Button primary onClick={onSave}>Save</Button>
                 <Button>update</Button>
                 <Button>delete</Button>

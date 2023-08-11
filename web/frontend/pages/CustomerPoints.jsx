@@ -31,9 +31,9 @@ function MyComponent() {
 
       const data = await response.json()
 
-      //setQrCodePoints(data.qrCodeLoyaltyPoints)
-      setQRcodes(data)
-      
+      setQrCodePoints(data.qrCodeLoyaltyPoints)
+      setQRcodes(data.qrCode)
+      console.log(data)
         
     }
 
