@@ -32,9 +32,7 @@ function MyComponent() {
       const data = await response.json()
 
       setQrCodePoints(data.qrCodeLoyaltyPoints)
-      setQRcodes(data.qrCode)
-      console.log(data)
-        
+      setQRcodes(data.qrCodes)
     }
 
     fetchCodes()
@@ -64,13 +62,16 @@ function MyComponent() {
               columnContentTypes={['text', 'text']}
               headings={['QR Codes', 'Add/Remove Points']}
               rows={Qrcodes.map((qrCodes) => {
-                let loyalPoints = QrCodePoints.find((pointsDB) => pointsDB.qrCodesID === qrCodes.id)
+                console.log(QrCodePoints)
+                let loyalPoints = QrCodePoints.find((pointsDB) => pointsDB.qrCodeID === qrCodes.id)
                 
                 if (loyalPoints) {
+                  let {points} = loyalPoints
+
                   return [
                     qrCodes.title,
                     <Counters
-                    points = {loyalPoints}
+                    points = {points}
                     qrCodeID={qrCodes.id}
                     />
                   ]

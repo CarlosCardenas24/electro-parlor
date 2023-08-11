@@ -26,7 +26,6 @@ function Counters({qrCodeID, points}) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({qrCodeID, loyaltyPoints})
             })
@@ -34,6 +33,21 @@ function Counters({qrCodeID, points}) {
             console.log(data)
         }
         fetchPost()
+    }
+
+    const onUpdate = () => {
+        const fetchUpdate = async () => {
+            const response = await fetch (`/api/loyaltypoints/${qrCodeID}?host=${window.__SHOPIFY_DEV_HOST}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({loyaltyPoints})
+            })
+            const data = await response.json()
+            console.log(data)
+        }
+        fetchUpdate()
     }
 
     return (
@@ -45,7 +59,7 @@ function Counters({qrCodeID, points}) {
                 <Button onClick={() => setLoyaltyPoints(loyaltyPoints + 1)}>+</Button>
                 <Button onClick={subtractPoints}>-</Button>
                 <Button primary onClick={onSave}>Save</Button>
-                <Button>update</Button>
+                <Button onClick={onUpdate}>update</Button>
                 <Button>delete</Button>
             </ButtonGroup>
         </HorizontalGrid>

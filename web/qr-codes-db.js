@@ -113,23 +113,23 @@ export const QRCodesDB = {
   },
 
   // update loyalty points
-  updateLoyaltyPoints: async function ({
+  updateLoyaltyPoints: async function (
     qrCodeID,
     points
-  }) {
+  ) {
     await this.ready
 
     const query = `
     UPDATE ${this.loyaltyPointsTableName}
     SET
-      points = ?,
+      points = ?
     WHERE
-      qrCodeID = ?  
+      qrCodeID = ?;
     `;
 
     await this.__query(query, [
-      qrCodeID,
-      points
+      points,
+      qrCodeID
     ])
 
     return true
