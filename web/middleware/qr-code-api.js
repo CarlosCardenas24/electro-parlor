@@ -169,12 +169,12 @@ export default function applyQrCodeApiEndpoints(app) {
   });
 
   app.put("/api/loyaltypoints/:id", async (req, res) => {
-    const qrCodeID = req.params
-    const points = req.body
+    const {id} = req.params
+    const {loyaltyPoints} = req.body
 
       try {
-        const response = await QRCodesDB.updateLoyaltyPoints(qrCodeID, points);
-        res.status(200).send({response, message: `updated`});
+        const response = await QRCodesDB.updateLoyaltyPoints(id, loyaltyPoints);
+        res.status(200).send({response, messag: `Updated Qr Code ${id} points to ${loyaltyPoints} `, id, loyaltyPoints});
       } catch (error) {
         res.status(502).send(error.message);
       }
