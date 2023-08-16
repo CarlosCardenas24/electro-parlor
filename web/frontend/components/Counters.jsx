@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
 import { 
     ButtonGroup, 
@@ -10,8 +10,15 @@ import { show } from "@shopify/app-bridge/actions/ContextualSaveBar";
 
 function Counters({qrCodeID, points}) {
     const [loyaltyPoints, setLoyaltyPoints] = useState(points)
+    const [show, setShow] = useState(false)
 
     const fetch = useAuthenticatedFetch()
+
+    useEffect(() => {
+        if (loyaltyPoints) {
+            setShow(true)
+        }
+      }, [])
     
     // subract loyalty points -- don't allow below zero
     const subtractPoints = () => {
@@ -33,6 +40,7 @@ function Counters({qrCodeID, points}) {
             console.log(data)
         }
         fetchPost()
+        setShow(true)
     }
 
     const onUpdate = () => {
@@ -46,6 +54,10 @@ function Counters({qrCodeID, points}) {
             })
             const data = await response.json()
             console.log(data)
+
+            if (loyaltyPoints === 0) {
+                onDelete()
+            }
         }
         fetchUpdate()
     }
@@ -64,6 +76,7 @@ function Counters({qrCodeID, points}) {
         }
         fetchDelete()
         setLoyaltyPoints(0)
+        setShow(false)
     }
 
     return (
@@ -74,9 +87,15 @@ function Counters({qrCodeID, points}) {
             <ButtonGroup>
                 <Button onClick={() => setLoyaltyPoints(loyaltyPoints + 1)}>+</Button>
                 <Button onClick={subtractPoints}>-</Button>
-                <Button primary onClick={onSave}>Save</Button>
-                <Button onClick={onUpdate}>update</Button>
-                <Button onClick={onDelete}>delete</Button>
+                {!show ? 
+                    <Button primary onClick={onSave}>Save</Button>
+                :
+                    <ButtonGroup>
+                        <Button onClick={onUpdate}>update</Button>
+                        <Button onClick={onDelete}>delete</Button>
+                    </ButtonGroup>
+                }
+                
             </ButtonGroup>
         </HorizontalGrid>
     )
