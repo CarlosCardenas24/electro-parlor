@@ -29,18 +29,18 @@ function MyComponent() {
       }
       })
 
-      const responsePoints = await fetch('/api/loyaltypoints', {
+      /* const responsePoints = await fetch('/api/loyaltypoints', {
         method,
         headers: {
           'Content-Type': 'application/json',
         }
-        })
+        }) */
 
       const data = await response.json()
-      const points = await responsePoints.json()
+      //const points = await responsePoints.json()
 
-      setQrCodePoints(points)
-      setQRcodes(data)
+      setQrCodePoints(data.qrCodeLoyaltyPoints)
+      setQRcodes(data.qrCodes)
     }
 
     fetchCodes()
