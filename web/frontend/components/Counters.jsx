@@ -50,6 +50,22 @@ function Counters({qrCodeID, points}) {
         fetchUpdate()
     }
 
+    const onDelete = () => {
+        const fetchDelete = async () => {
+            const response = await fetch (`/api/loyaltypoints/${qrCodeID}?host=${window.__SHOPIFY_DEV_HOST}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({loyaltyPoints})
+            })
+            const data = await response.json()
+            console.log(data)
+        }
+        fetchDelete()
+        setLoyaltyPoints(0)
+    }
+
     return (
         <HorizontalGrid gap="4">
             <Text>
@@ -60,7 +76,7 @@ function Counters({qrCodeID, points}) {
                 <Button onClick={subtractPoints}>-</Button>
                 <Button primary onClick={onSave}>Save</Button>
                 <Button onClick={onUpdate}>update</Button>
-                <Button>delete</Button>
+                <Button onClick={onDelete}>delete</Button>
             </ButtonGroup>
         </HorizontalGrid>
     )
