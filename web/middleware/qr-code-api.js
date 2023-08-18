@@ -171,7 +171,7 @@ export default function applyQrCodeApiEndpoints(app) {
       return res.status(500).send(error.message)
     }
   });
-
+ 
   /* app.get("/api/loyaltypoints", async (req, res) => {
     try {
       const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
