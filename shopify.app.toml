@@ -2,7 +2,7 @@
 
 name = "CCWebArch"
 client_id = "fc10140194da0eb4be42235c66b881d4"
-application_url = "https://cornell-spas-adjusted-message.trycloudflare.com"
+application_url = "https://walking-communications-shake-paper.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products,read_discounts"
 
 [auth]
 redirect_urls = [
-  "https://cornell-spas-adjusted-message.trycloudflare.com/auth/callback",
-  "https://cornell-spas-adjusted-message.trycloudflare.com/auth/shopify/callback",
-  "https://cornell-spas-adjusted-message.trycloudflare.com/api/auth/callback"
+  "https://walking-communications-shake-paper.trycloudflare.com/auth/callback",
+  "https://walking-communications-shake-paper.trycloudflare.com/auth/shopify/callback",
+  "https://walking-communications-shake-paper.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

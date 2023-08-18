@@ -14,12 +14,33 @@ import { useQuery } from "react-query";
  *
  * @returns Return value of useQuery.  See: https://react-query.tanstack.com/reference/useQuery.
  */
-export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
+/* export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
   const authenticatedFetch = useAuthenticatedFetch();
   const fetch = useMemo(() => {
     return async () => {
       const response = await authenticatedFetch(url, fetchInit);
       return response.json();
+    };
+  }, [url, JSON.stringify(fetchInit)]);
+
+  return useQuery(url, fetch, {
+    ...reactQueryOptions,
+    refetchOnWindowFocus: false,
+  });
+}; */
+export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
+  const authenticatedFetch = useAuthenticatedFetch();
+  console.log(url)
+  const fetch = useMemo(() => {
+    return async () => {
+      const response = await authenticatedFetch(url, fetchInit);
+
+      if (url === "/api/qrcodes"){
+        const data = await response.json()
+        return data.qrCodes
+      }else {
+        return response.json();
+      }
     };
   }, [url, JSON.stringify(fetchInit)]);
 

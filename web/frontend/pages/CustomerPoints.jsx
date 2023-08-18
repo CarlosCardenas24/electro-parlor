@@ -29,18 +29,17 @@ function MyComponent() {
       }
       })
 
-      const responsePoints = await fetch('/api/loyaltypoints', {
+      /* const responsePoints = await fetch('/api/loyaltypoints', {
         method,
         headers: {
           'Content-Type': 'application/json',
         }
-        })
+      }) */
 
       const data = await response.json()
-      const points = await responsePoints.json()
-
-      setQrCodePoints(points)
-      setQRcodes(data)
+      //const points = await responsePoints.json()
+      setQrCodePoints(data.qrCodeLoyaltyPoints)
+      setQRcodes(data.qrCodes)
     }
 
     fetchCodes()
@@ -70,7 +69,6 @@ function MyComponent() {
               columnContentTypes={['text', 'text']}
               headings={['QR Codes', 'Add/Remove Points']}
               rows={Qrcodes.map((qrCodes) => {
-                console.log(QrCodePoints)
                 let loyalPoints = QrCodePoints.find((pointsDB) => pointsDB.qrCodeID === qrCodes.id)
                 
                 if (loyalPoints) {

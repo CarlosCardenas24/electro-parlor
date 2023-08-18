@@ -120,16 +120,17 @@ export default function applyQrCodeApiEndpoints(app) {
     }
   });
 
+  // --------------------------------------------------------
   app.get("/api/qrcodes", async (req, res) => {
     try {
       const rawCodeData = await QRCodesDB.list(
         await getShopUrlFromSession(req, res)
       );
 
-      //const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
+      const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
       const qrCodes = await formatQrCodeResponse(req, res, rawCodeData);
-      
-      res.status(200).send(/* {qrCodes, qrCodeLoyaltyPoints} */ qrCodes);
+
+     res.status(200).send({qrCodes, qrCodeLoyaltyPoints})
     } catch (error) {
       console.error(error);
       res.status(500).send(error.message);
@@ -156,19 +157,22 @@ export default function applyQrCodeApiEndpoints(app) {
 
   // Start of customer points ---------------------------------------------------------
   app.post("/api/loyaltypoints", async (req, res) => {
+    const {qrCodeID} = req.body
+    const {loyaltyPoints} = req.body
+
     try {
       const initResponse = await QRCodesDB.initLoyaltyPoints()
       const createResponse = await QRCodesDB.createLoyaltyPoints(req.body)
 
       return res.status(201).send({
-        message: "Points saved"
+        message: `${loyaltyPoints} points saved for Qr Code with id: ${qrCodeID}`
       });
     } catch (error) {
       return res.status(500).send(error.message)
     }
   });
 
-  app.get("/api/loyaltypoints", async (req, res) => {
+  /* app.get("/api/loyaltypoints", async (req, res) => {
     try {
       const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
       
@@ -177,7 +181,7 @@ export default function applyQrCodeApiEndpoints(app) {
       console.error(error);
       res.status(500).send(error.message);
     }
-  });
+  }); */
 
   app.put("/api/loyaltypoints/:id", async (req, res) => {
     const {id} = req.params
@@ -185,7 +189,7 @@ export default function applyQrCodeApiEndpoints(app) {
 
       try {
         const response = await QRCodesDB.updateLoyaltyPoints(id, loyaltyPoints);
-        res.status(200).send({response, messag: `Qr Code with id of: ${id} has been updated ${loyaltyPoints} points`});
+        res.status(200).send({response, message: `Qr Code with id of: ${id} has been updated to ${loyaltyPoints} points`});
       } catch (error) {
         res.status(502).send(error.message);
       }

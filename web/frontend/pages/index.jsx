@@ -33,7 +33,7 @@ export default function HomePage() {
     */
     isRefetching,
   } = useAppQuery({
-    url: "/api/qrcodes",
+    url: "/api/qrcodes"
   });
 
 
