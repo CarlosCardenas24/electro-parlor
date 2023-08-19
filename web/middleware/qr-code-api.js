@@ -120,7 +120,6 @@ export default function applyQrCodeApiEndpoints(app) {
     }
   });
 
-  // --------------------------------------------------------
   app.get("/api/qrcodes", async (req, res) => {
     try {
       const rawCodeData = await QRCodesDB.list(
@@ -165,23 +164,12 @@ export default function applyQrCodeApiEndpoints(app) {
       const createResponse = await QRCodesDB.createLoyaltyPoints(req.body)
 
       return res.status(201).send({
-        message: `${loyaltyPoints} points saved for Qr Code with id: ${qrCodeID}`
+        message: `${loyaltyPoints} points saved for Qr Code id: ${qrCodeID}`
       });
     } catch (error) {
       return res.status(500).send(error.message)
     }
   });
- 
-  /* app.get("/api/loyaltypoints", async (req, res) => {
-    try {
-      const qrCodeLoyaltyPoints = await QRCodesDB.listLoyaltyPoints();
-      
-      res.status(200).send(qrCodeLoyaltyPoints);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send(error.message);
-    }
-  }); */
 
   app.put("/api/loyaltypoints/:id", async (req, res) => {
     const {id} = req.params
@@ -189,7 +177,7 @@ export default function applyQrCodeApiEndpoints(app) {
 
       try {
         const response = await QRCodesDB.updateLoyaltyPoints(id, loyaltyPoints);
-        res.status(200).send({response, message: `Qr Code with id of: ${id} has been updated to ${loyaltyPoints} points`});
+        res.status(200).send({response, message: `Qr Code id: ${id} has been updated to ${loyaltyPoints} points`});
       } catch (error) {
         res.status(502).send(error.message);
       }
@@ -200,7 +188,7 @@ export default function applyQrCodeApiEndpoints(app) {
 
     try {
       const response = await QRCodesDB.deleteLoyaltyPoints(id)
-      res.status(200).send({response, message: `Qr Code with id of: ${id} has been deleted`})
+      res.status(200).send({response, message: `Points associated with Qr Code id: ${id} has been deleted`})
     } catch (error) {
 
     }

@@ -31,18 +31,18 @@ export default function HomePage() {
       Once the query refetches, IndexTable updates and the loading state is removed.
       This ensures a performant UX.
     */
+    isFetched,
     isRefetching,
   } = useAppQuery({
     url: "/api/qrcodes"
   });
-
-
-  /* Set the QR codes to use in the list */
+  
+    /* Set the QR codes to use in the list */ 
   const qrCodesMarkup = QRCodes?.length ? (
     <QRCodeIndex QRCodes={QRCodes} loading={isRefetching} />
   ) : null;
 
-
+    console.log(isFetched)
   /* loadingMarkup uses the loading component from AppBridge and components from Polaris  */
   const loadingMarkup = isLoading ? (
     <Card sectioned>

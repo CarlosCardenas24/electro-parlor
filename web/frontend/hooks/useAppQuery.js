@@ -14,7 +14,8 @@ import { useQuery } from "react-query";
  *
  * @returns Return value of useQuery.  See: https://react-query.tanstack.com/reference/useQuery.
  */
-/* export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
+/* original useAppQuery code
+export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
   const authenticatedFetch = useAuthenticatedFetch();
   const fetch = useMemo(() => {
     return async () => {
@@ -26,8 +27,9 @@ import { useQuery } from "react-query";
   return useQuery(url, fetch, {
     ...reactQueryOptions,
     refetchOnWindowFocus: false,
-  });
+  }); 
 }; */
+
 export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
   const authenticatedFetch = useAuthenticatedFetch();
   console.log(url)
@@ -35,6 +37,7 @@ export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
     return async () => {
       const response = await authenticatedFetch(url, fetchInit);
 
+      // Needed to add if Statement to avoid creating another app.get in qr-code-api.js
       if (url === "/api/qrcodes"){
         const data = await response.json()
         return data.qrCodes
