@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
 import { 
     ButtonGroup, 
@@ -10,9 +10,16 @@ import { show } from "@shopify/app-bridge/actions/ContextualSaveBar";
 
 function Counters({qrCodeID, points}) {
     const [loyaltyPoints, setLoyaltyPoints] = useState(points)
+    const [show, setShow] = useState(false)
 
     const fetch = useAuthenticatedFetch()
 
+    useEffect(() => {
+        if (loyaltyPoints) {
+            setShow(true)
+        }
+      }, [])
+    
     // subract loyalty points -- don't allow below zero
     const subtractPoints = () => {
         if (loyaltyPoints > 0) {
@@ -20,25 +27,56 @@ function Counters({qrCodeID, points}) {
         }
     }
 
-    // get a successful request to the api
     const onSave = () => {
-        const fetchPost = async () => { 
-            const shop = `electro-parlor.myshopify.com`
-            const host =  window.__SHOPIFY_DEV_HOST
-
-            const response = await fetch(`/api/loyaltypoints?shop=${shop}&host=${window.__SHOPIFY_DEV_HOST}`, {
+        const fetchPost = async () => {
+            const response = await fetch (`/api/loyaltypoints?host=${window.__SHOPIFY_DEV_HOST}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'isOnline': true
                 },
-                mode: "no-cors",
                 body: JSON.stringify({qrCodeID, loyaltyPoints})
             })
             const data = await response.json()
             console.log(data)
         }
         fetchPost()
+        setShow(true)
+    }
+
+    const onUpdate = () => {
+        const fetchUpdate = async () => {
+            const response = await fetch (`/api/loyaltypoints/${qrCodeID}?host=${window.__SHOPIFY_DEV_HOST}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({loyaltyPoints})
+            })
+            const data = await response.json()
+            console.log(data)
+
+            if (loyaltyPoints === 0) {
+                onDelete()
+            }
+        }
+        fetchUpdate()
+    }
+
+    const onDelete = () => {
+        const fetchDelete = async () => {
+            const response = await fetch (`/api/loyaltypoints/${qrCodeID}?host=${window.__SHOPIFY_DEV_HOST}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({loyaltyPoints})
+            })
+            const data = await response.json()
+            console.log(data)
+        }
+        fetchDelete()
+        setLoyaltyPoints(0)
+        setShow(false)
     }
 
     return (
@@ -49,9 +87,15 @@ function Counters({qrCodeID, points}) {
             <ButtonGroup>
                 <Button onClick={() => setLoyaltyPoints(loyaltyPoints + 1)}>+</Button>
                 <Button onClick={subtractPoints}>-</Button>
-                <Button primary onClick={onSave}>Save</Button>
-                <Button>update</Button>
-                <Button>delete</Button>
+                {!show ? 
+                    <Button primary onClick={onSave}>Save</Button>
+                :
+                    <ButtonGroup>
+                        <Button onClick={onUpdate}>update</Button>
+                        <Button onClick={onDelete}>delete</Button>
+                    </ButtonGroup>
+                }
+                
             </ButtonGroup>
         </HorizontalGrid>
     )

@@ -12,8 +12,8 @@ import Counters from '../components/Counters'
 
 
 function MyComponent() {
-  const [QrCodes, setQrCodes] = useState([])
-  const [loyaltyPoints, setLoyaltyPoints] = useState()
+  const [Qrcodes, setQRcodes] = useState([])
+  const [QrCodePoints, setQrCodePoints] = useState([])
 
   const fetch = useAuthenticatedFetch()
 
@@ -30,8 +30,9 @@ function MyComponent() {
       })
 
       const data = await response.json()
-
-      setQrCodes(data)       
+      
+      setQrCodePoints(data.qrCodeLoyaltyPoints)
+      setQRcodes(data.qrCodes)
     }
 
     fetchCodes()
@@ -52,7 +53,7 @@ function MyComponent() {
 
           <LegacyCard title='QR Codes' sectioned>
             {
-              QrCodes.length === 0 ?
+              Qrcodes.length === 0 ?
               <Text variant="headingMd" as="p">
               There are no QR codes
               </Text>
@@ -60,14 +61,29 @@ function MyComponent() {
               <DataTable
               columnContentTypes={['text', 'text']}
               headings={['QR Codes', 'Add/Remove Points']}
-              rows={QrCodes.map((qrCodes) => {
+              rows={Qrcodes.map((qrCodes) => {
+                let loyalPoints = QrCodePoints.find((pointsDB) => pointsDB.qrCodeID === qrCodes.id)
+                
+                if (loyalPoints) {
+                  let {points} = loyalPoints
+
                   return [
-                    qrCodes.title, 
+                    qrCodes.title,
                     <Counters
-                      points = {0}
-                      qrCodeID = {qrCodes.id}
+                    points = {points}
+                    qrCodeID={qrCodes.id}
                     />
                   ]
+                }
+
+                return [
+                  qrCodes.title,
+                  <Counters
+                  points = {0}
+                  qrCodeID={qrCodes.id}
+                  />
+                ]
+                
               })} 
               />
 
